@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clap Me</title>
+<link href="css/style.css" type="text/css" rel="stylesheet">
+<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="wrapper addpayment">
+
+  <div class="container">
+  <header>
+  <a href="#" data-toggle="modal" data-target="#myprofilemenus"><img src="images/menu.png"/>Payment</a>
+  </header>
+    <div class="innerpage">
+	<div class="innermidbox">
+<div class="addpaymentbox">
+<h1>You are almost done!</h1>
+<p>Select the payment method with which you 
+would like topay it. If you skip Cash will be
+set as your default payment method.</p>
+<ul class="paymentoption">
+<li><a href="javascript::void(0);" onClick="proceedPayment('card');"><img class="cashimg" src="images/card.png"/>Card <img class="arrow" src="images/arrow.png"/></a></li>
+<li><a href="javascript::void(0);"  onClick="proceedPayment('cash');"><img class="cashimg" src="images/cash.png"/>Cash <img class="arrow" src="images/arrow.png"/></a></li>
+</ul>
+
+<input class="submit-btn" type="button" onClick="proceedPayment('cash');" value="Skip"/>
+</div>
+	
+
+
+    </div>
+
+	<div class="ph-btm-img">
+	<img src="images/inner-btm-bg.png"/>
+	</div>
+	</div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div id="myprofilemenus" class="modal fade menupopup" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+     
+    </div>
+
+  </div>
+</div>
+
+
+
+<script type="text/javascript" src="js/config.js"></script>
+<script type="text/javascript">
+$("#confirm_close").on('click', function(){
+	$('#payment_confirm').modal('hide');	
+});
+
+function proceedPayment(payment_method){
+	
+	var pay_amt = gup('tot_amt');
+	var trip_id = gup('trp_id');	
+	var fare_amt = gup('fare_amt');	
+	var distance = gup('dist');
+	
+	var wt_time = gup('wt_time');
+	var wait_cost = gup('wait_cost');
+	
+	var discount = gup('discount');	
+	
+	var redirect_to = 'fare-calculation.html?payment_method=' + payment_method + '&trip_id=' + trip_id + '&pay_amt=' + pay_amt;	
+	redirect_to += '&fare_amt=' + fare_amt + '&distance=' + distance;
+	
+	if(discount !== 'undefined')
+	{
+		var disamount = parseFloat(discount);
+		
+		if(disamount > 0.00)
+		{		
+			redirect_to += '&discount=' + discount;
+		}
+	}
+	
+	if(wt_time !== 'undefined')
+	{
+		redirect_to += '&wt_time=' + wt_time;	
+	}
+	
+	if(wait_cost !== 'undefined')
+	{
+		redirect_to += '&wait_cost=' + wait_cost;	
+	}
+	
+	window.location = redirect_to;	
+}
+</script>
+
+</body>
+</html>

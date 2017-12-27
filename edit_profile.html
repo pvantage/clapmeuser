@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clap Me</title>
+<link href="css/style.css" type="text/css" rel="stylesheet">
+<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link href="css/jquery-ui.css" type="text/css" rel="stylesheet">
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+
+
+</head>
+
+<body>
+<div class="wrapper register">
+
+  <div class="container">
+  <header>
+  <a href="#" data-toggle="modal" data-target="#myprofilemenus"><img src="images/menu.png"/>Profile</a>
+  </header>
+    <div class="innerpage">
+	<div class="innermidbox">
+	<div class="log-reg">
+	<img src="images/clap-logo.png"/>
+	
+	</div>
+	
+
+<form class="loginfrm" id="loginuser" action="" method="post">
+<input type="text" class="required" name="fname" id="fname" placeholder="First Name"/>
+<input type="email" class="required email" name="email" id="email" placeholder="Email"/>
+<input type="tel" class="required number" name="phone" id="phone" placeholder="Mobile Number"/>
+<input type="text" name="dob" id="dob" placeholder="Date Of Birth"/>
+<input type="password" name="pwd" id="pwd" placeholder="Password"/>
+<input class="submit-btn" type="submit" value="Update"/>
+
+</form>
+
+    </div>
+
+	<div class="ph-btm-img">
+	<img src="images/inner-btm-bg.png"/>
+	</div>
+	</div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div id="myprofilemenus" class="modal fade menupopup" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      
+     
+    </div>
+
+  </div>
+</div>
+<script type="text/javascript" src="js/validate.js"></script>
+<script type="text/javascript" src="js/config.js"></script>
+<script type="text/javascript">
+
+jQuery(document).ready(function(){
+	
+	jQuery( document ).on( "mobileinit", function() {
+		jQuery.mobile.allowCrossDomainPages = true;
+	});
+	var contentType ="application/x-www-form-urlencoded; charset=utf-8";
+    if(window.XDomainRequest){contentType = "text/plain";}
+	jQuery.support.cors = true;
+	jQuery('#loginuser').validate({
+  		rules: {
+		    phone: {
+			  required: true,
+			  minlength: 8,
+			  maxlength:10
+			},
+		}
+
+	});
+	jQuery('#dob').datepicker({
+		dateFormat:'yy-mm-dd',
+		maxDate: new Date(),
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "-120:+0"
+	});
+	var email=localStorage.getItem('User_email');
+	if(typeof email!='undefine' && email!='' && email!=null && email!='0'){
+		jQuery('#email').val(email);
+	}
+	var phone=localStorage.getItem('User_phone');
+	if(typeof phone!='undefine' && phone!='' && phone!=null && phone!='null' && phone!='0'){
+		jQuery('#phone').val(phone);
+	}
+	var fname=localStorage.getItem('User_fname');
+	if(typeof fname!='undefine' && fname!='' && fname!=null && fname!='null' && fname!='0'){
+		jQuery('#fname').val(fname);
+	}
+	var dob=localStorage.getItem('User_dob');
+	if(typeof dob!='undefine' && dob!='' && dob!=null && dob!='null' && dob!='0'){
+		jQuery('#dob').val(dob);
+	}
+	jQuery('#loginuser').submit( function(){	
+		var error=false;
+		jQuery('#loginuser input').each(function(){
+			if(jQuery(this).hasClass('error')){
+				error=true;
+			}
+		});
+		var uid=localStorage.getItem('User_ID');
+		var user_login=jQuery('#email').val();
+		var user_pass=jQuery('#pwd').val();
+		var phone=jQuery('#phone').val();
+		var fname=jQuery('#fname').val();
+		var dob=jQuery('#dob').val();
+		var url=siteurl+'/api/user/users';
+		if(user_login=='' || phone=='' || error)
+		{
+			return false;
+		}
+		else
+		{
+			 jQuery.ajax({  
+			 type: 'POST',  
+			 url: url,           
+			 dataType: 'json',  
+			 data: {uname:user_login,pwd:user_pass, phone:phone,fname:fname, dob:dob, id:uid,updateuser:1}, 
+			 beforeSend: function() {
+			 	
+			 },		
+			 complete: function() {
+			 	//jQuery('body .bodyoverlay').remove();
+				jQuery('body .preloader').remove();
+			 }, 
+			 crossDomain: true,  
+			 success: function(res) { 
+				if(res['error']){				
+					jQuery('body .bodyoverlay').remove();
+					jQuery('body .popupbox').remove();
+					var html='<div class="bodyoverlay"></div><div class="popupbox errorbox"><div class="popupimg"><img src="images/error.png" /></div><h1 class="success">ERROR</h1><h1>'+res['error']+'</h1><button class="okbox">OK</button></div>';
+					jQuery('body').append(html);
+					
+					jQuery('.okbox').click(function(){
+						jQuery('body .bodyoverlay').remove();
+						jQuery('body .popupbox').remove();
+					});
+					
+				}
+				else if(res['users']['updateuser'])
+				{
+					if(res['users']['udetail'])
+					{
+						localStorage.setItem('User_email', res['users']['udetail']['email']);
+						localStorage.setItem('User_phone', res['users']['udetail']['phone']);
+						localStorage.setItem('User_fname', res['users']['udetail']['fname']);
+						localStorage.setItem('User_dob', res['users']['udetail']['dob']);
+					}
+					
+					jQuery('body .bodyoverlay').remove();
+					jQuery('body .popupbox').remove();
+					var html='<div class="bodyoverlay"></div><div class="popupbox"><div class="popupimg"><img src="images/pop.png" /></div><h1 class="success">SUCCESS</h1><h1>'+res['users']['updateuser']+'</h1><button class="okbox">OK</button></div>';
+					jQuery('body').append(html);
+					jQuery('.okbox').click(function(){
+						jQuery('body .bodyoverlay').remove();
+						jQuery('body .popupbox').remove();
+					});
+				
+				}
+				
+				return false; 
+			 }			
+			        
+		   });
+		 }	
+		 return false;   
+	});
+	
+	
+});
+
+</script>
+
+</body>
+</html>

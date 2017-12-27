@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "669437807404",
+    "firebase_url": "https://clapme-184112.firebaseio.com",
+    "project_id": "clapme-184112",
+    "storage_bucket": "clapme-184112.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669437807404:android:ffd5125ca78ced66",
+        "android_client_info": {
+          "package_name": "clapme.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669437807404-n3p7v5m2654r6dvf9nnqlurrskghopk4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrMVD5LWCrNi6Pawb7MslhNkzQNTfOTdA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

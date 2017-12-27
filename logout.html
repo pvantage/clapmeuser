@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+   <link href="css/style.css" type="text/css" rel="stylesheet">
+</head>
+
+<body>
+<div class="wrapper">
+  <div class="container">
+    <div class="launchpage">
+      <div class="logobox"><img src="images/1.png"/></div>
+    </div>
+  </div>
+</div>
+<script src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/config.js"></script>
+	<script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery('.logobox img').css({'min-height':jQuery(window).height()+'px'});
+		});
+		jQuery( document ).on( "mobileinit", function() {
+			jQuery.mobile.allowCrossDomainPages = true;
+		});
+		var contentType ="application/x-www-form-urlencoded; charset=utf-8";
+		if(window.XDomainRequest){contentType = "text/plain";}
+		jQuery.support.cors = true;
+		
+		var uid=localStorage.getItem('User_ID');
+		if(typeof uid!='undefine' && uid!='' && uid!=null){
+			
+			var url=siteurl+'/api/user/login';
+				 jQuery.ajax({  
+				 type: 'POST',  
+				 url: url,           
+				 dataType: 'json',  
+				 data: {uid:uid,logoutuser:1}, 
+				 beforeSend: function() {
+					
+				 },		
+				 complete: function() {
+					
+				 }, 
+				 crossDomain: true,  
+				 success: function(res) { 
+				 	
+					if(res['checkout']['success'])
+					{
+						var let=localStorage.getItem('User_Lat');
+						var longi=localStorage.getItem('User_Long');
+						localStorage.clear();
+						if(typeof let!='undefined' && let!=null && let!=''){
+							localStorage.setItem('User_Lat',let);
+							localStorage.setItem('User_Long',longi);
+						}
+						window.location ='phone.html';
+					
+						//localStorage.setItem('userInfo', res['success']['userid']);
+						//window.location ='category.html';
+					}else if(res['checkout']['error']){				
+						jQuery('body .showmessage').remove();
+						var html='<div class="showmessage">'+res['checkout']['error']+'</div>';
+						jQuery('body').append(html);
+						setTimeout(function(){jQuery('.showmessage').slideUp();},500);
+						
+					}
+					else
+					{
+						alert('Server error');
+					}
+					return false; 
+				 },  
+				 error: function(response, d, a){
+					jQuery('body .showmessage').remove();
+					var html='<div class="showmessage">Server Error.</div>';
+					jQuery('body').append(html);
+					setTimeout(function(){jQuery('.showmessage').slideUp();},500);
+					return false; 
+				 }
+						
+			   });
+			 }
+			 else{
+			 	localStorage.clear();
+				window.location ='phone.html';
+			 }
+	</script>
+  </body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clap Me</title>
+<link href="css/style.css" type="text/css" rel="stylesheet">
+<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="css/jquery.selectBoxIt.css" />
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+<script type="text/javascript" src="js/config.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.selectBoxIt.min.js"></script>
+<script type="text/javascript">
+  function checkDevice(){
+		document.addEventListener("deviceready", onDeviceReady, false);
+}
+
+function onDeviceReady() {
+ 		return true;
+  }
+</script>
+</head>
+<body onLoad="return checkDevice();">
+<div class="wrapper filterpage">
+  <div class="container">
+    <header> <a href="picuplocation.html"><img src="images/back.png"/>Filter Vehicle</a> </header>
+    <div class="innerpage filterinner">
+      <div class="innermidbox">
+        <div class="filtercnt">
+          <h1>Personalize your ride by using filters and find the 
+            best vehicle for you.</h1>
+          <div class="select-vehicle">
+            <div class="v-box company-box">
+              <h2>Company<span>+ Rs.0</span></h2>
+              <select name="company" id="company">
+                <option value="">Any</option>
+              </select>
+            </div>
+            <div class="v-box brandmodel-box">
+              <h2>Brandmodel<span>+ Rs.0</span></h2>
+              <select name="brandmodel" id="brandmodel">
+                <option value="">Any</option>
+              </select>
+            </div>
+            <div class="v-box color-box">
+              <h2>Color<span>+ Rs.0</span></h2>
+              <select name="color" id="color">
+                <option value="">Any</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <input class="submit-btn" type="button" value="Done">
+      </div>
+      <div class="ph-btm-img"> <img src="images/inner-btm-bg.png"/> </div>
+    </div>
+  </div>
+</div>
+</body>
+<script type="text/javascript">
+jQuery(function($) {
+	jQuery('select#color').selectBoxIt({ });
+});
+
+	jQuery(document).ready(function(){
+		jQuery( document ).on( "mobileinit", function() {
+			jQuery.mobile.allowCrossDomainPages = true;
+		});
+		var contentType ="application/x-www-form-urlencoded; charset=utf-8";
+		if(window.XDomainRequest){contentType = "text/plain";}
+		jQuery.support.cors = true;
+		
+		
+		var h=jQuery(window).height();
+		jQuery('.picuplocation').css({'height':h+'px','overflow':'hidden'});
+		var from_lati=gup('from_lati');
+		var from_longi=gup('from_longi');
+		var url=siteurl+'/api/user/locations';
+		jQuery.ajax({  
+		 type: 'POST',  
+		 url: url,  
+		 //contentType: contentType,  
+		 dataType: 'json',  
+		 data: {latitude:from_lati, longitude:from_longi,companylist:1},
+		 crossDomain: true,  
+		 beforeSend: function() {
+			
+		 },		
+		 complete: function() {
+			
+		 },
+		 success: function(res) { 
+			if(res['responce']){
+				var html='<option value="">Any</option>';
+				jQuery(res['responce']).each(function(index){
+					html+='<option value="'+res['responce'][index]['price']+'||'+res['responce'][index]['id']+'||'+res['responce'][index]['vtype_ids']+'">'+res['responce'][index]['company']+'</option>';
+				});
+				jQuery('#company').html(html);
+				jQuery('#company').selectBoxIt({ });
+				jQuery('#company').change(function(){
+					var v=jQuery(this).val();
+					jQuery('.company-box h2 span').html('+ Rs.0');
+					if(jQuery.trim(v)!=''){
+						var prices=v.split('||');
+						jQuery('.company-box h2 span').html('+ Rs.'+prices[0]);
+					}
+				});
+			}
+		 }
+		 });
+		 jQuery.ajax({  
+		 type: 'POST',  
+		 url: url,  
+		 //contentType: contentType,  
+		 dataType: 'json',  
+		 data: {latitude:from_lati, longitude:from_longi,brandlist:1},
+		 crossDomain: true,  
+		 beforeSend: function() {
+			
+		 },		
+		 complete: function() {
+			
+		 },
+		 success: function(res) { 
+			if(res['responce']){
+				var html='<option value="">Any</option>';
+				jQuery(res['responce']).each(function(index){
+					html+='<option value="'+res['responce'][index]['price']+'||'+res['responce'][index]['id']+'||'+res['responce'][index]['vtype_ids']+'">'+res['responce'][index]['brand']+'</option>';
+				});
+				jQuery('#brandmodel').html(html);
+				jQuery('#brandmodel').selectBoxIt({ });
+				jQuery('#brandmodel').change(function(){
+					var v=jQuery(this).val();
+					jQuery('.brandmodel-box h2 span').html('+ Rs.0');
+					jQuery('.color-box h2 span').html('+ Rs.0');
+					var chtml='<option value="">Any</option>';
+					jQuery('#color').html(chtml);
+					$("#color").data('selectBox-selectBoxIt').refresh();
+					if(jQuery.trim(v)!=''){
+						var prices=v.split('||');
+						jQuery('.brandmodel-box h2 span').html('+ Rs.'+prices[0]);
+						
+						var brand_id=prices[1];
+						jQuery.ajax({  
+						 type: 'POST',  
+						 url: url,  
+						 //contentType: contentType,  
+						 dataType: 'json',  
+						 data: {brand_id:brand_id,colorlist:1},
+						 crossDomain: true,  
+						 beforeSend: function() {
+							
+						 },		
+						 complete: function() {
+							
+						 },
+						 success: function(res) { 
+							if(res['responce']){
+								//jQuery('#colorSelectBoxItContainer').remove();
+								var html='<option value="">Any</option>';
+								jQuery(res['responce']).each(function(index){
+									html+='<option value="'+res['responce'][index]['price']+'||'+res['responce'][index]['id']+'">'+res['responce'][index]['color']+'</option>';
+								});
+								jQuery('#color').html(html);
+								 $("#color").data('selectBox-selectBoxIt').refresh();
+								jQuery('#color').change(function(){
+									var v=jQuery(this).val();
+									jQuery('.color-box h2 span').html('+ Rs.0');
+									if(jQuery.trim(v)!=''){
+										var prices=v.split('||');
+										jQuery('.color-box h2 span').html('+ Rs.'+prices[0]);
+										
+									}
+								});
+							}
+						 }
+						 });
+					}
+				});
+			}
+		 }
+		 });
+		 
+		 jQuery('.submit-btn').click(function(){
+		 	var company=jQuery('#company').val();
+			var vtype_ids=[];
+			var surl='';
+			if(jQuery.trim(company)!=''){
+				var c=company.split('||');
+				vtype_ids.push(c[2].split(','));
+				surl+='?company_id='+c[1]+'&company_price='+c[0];
+			}
+			var brand=jQuery('#brandmodel').val();
+			if(jQuery.trim(brand)!=''){
+				var c=brand.split('||');
+				vtype_ids.push(c[2].split(','));
+				if(jQuery.trim(surl)!=''){
+					surl+='&brand_id='+c[1]+'&brand_price='+c[0];
+				}
+				else
+				{
+					surl+='?brand_id='+c[1]+'&brand_price='+c[0];
+				}
+			}
+			var color=jQuery('#color').val();
+			if(jQuery.trim(color)!=''){
+				var c=color.split('||');
+				if(jQuery.trim(surl)!=''){
+					surl+='&color_id='+c[1]+'&color_price='+c[0];
+				}
+				else
+				{
+					surl+='?color_id='+c[1]+'&color_price='+c[0];
+				}
+			}
+			vtypeids = vtype_ids.filter(function(item, pos) {
+				return vtype_ids.indexOf(item) == pos;
+			});
+			if(jQuery.trim(surl)!=''){
+				surl+='&vtypeids='+vtypeids.toString();
+			}
+			window.location='picuplocation.html'+surl;
+		 });
+	});
+</script>
+</html>

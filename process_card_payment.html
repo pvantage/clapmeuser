@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clap Me</title>
+<link href="css/style.css" type="text/css" rel="stylesheet">
+<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="css/jquery.selectBoxIt.css" />
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+<script src="js/jquery.selectBoxIt.min.js"></script>
+<script src="js/config.js"></script>
+<script type="text/javascript">
+function checkDevice(){
+	document.addEventListener("deviceready", onDeviceReady, false);
+}
+function onDeviceReady(){
+	return true;	
+}
+</script>
+</head>
+<body onLoad="checkDevice();">
+<div class="wrapper addcart payment">
+  <div class="container">
+    <header> <a href="#" data-toggle="modal" data-target="#myprofilemenus"><img src="images/menu.png"/>Credit card Payment</a> </header>
+    <div class="innerpage payment-inner">
+      <div class="innermidbox">               
+        <div class="addcart">
+          <form class="loginfrm" id="checkout_frm">
+            <div class="biling-amount">Billing Amount: <span id="payment_amt"></span></div>
+            <h1>Billing Address</h1>
+            <div class="bling-dtl">
+              <input type="hidden" name="payment_token" id="payment_token">
+              <input type="text" name="billing_street" id="billing_street" tabindex="1" placeholder="Enter street address"/>
+              <input class="second-box" type="text" name="billing_city" id="billing_city" tabindex="2" placeholder="Enter billing city"/>
+              <input class="second-box lst-scnd" type="text" name="billing_state" id="billing_state" tabindex="3" placeholder="Enter billing state"/>
+              <input class="second-box" type="text" name="billing_country" id="billing_country" tabindex="4" placeholder="Enter billing country"/>
+              <input class="second-box lst-scnd" type="text" name="billing_zipcode" id="billing_zipcode" maxlength="7" tabindex="5" placeholder="Enter billing post code"/>
+            </div>
+            <h1>Credit Card Detail</h1>
+            <div class="bling-dtl">
+              <input type="text" name="billing_card" id="billing_card" tabindex="6" maxlength="16" placeholder="Card Number"/>
+              <div class="second-box sltboxmain">
+                <select name="billing_month" id="billing_month">                 
+                  <option value="01">Jan</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>                  
+                </select>
+              </div>
+              <div class="second-box lst-scnd sltboxmain">
+                <select name="billing_year" id="billing_year">                  
+                  <option value="2017">2017</option>
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                  <option value="2020">2020</option>                  
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+                  <option value="2023">2023</option>
+                  <option value="2024">2024</option>
+                  <option value="2025">2025</option>
+                  <option value="2026">2026</option>
+                  <option value="2027">2027</option>
+                  <option value="2028">2028</option>
+                  <option value="2029">2029</option>
+                  <option value="2030">2030</option>
+                  <option value="2031">2031</option>
+                  <option value="2032">2032</option>
+                  <option value="2033">2033</option>
+                  <option value="2034">2034</option>
+                  <option value="2035">2035</option>
+                  <option value="2036">2036</option>
+                  <option value="2037">2037</option>
+                  <option value="2038">2038</option>
+                  <option value="2039">2039</option>
+                  <option value="2040">2040</option>
+                </select>
+              </div>
+              <input type="text" name="billing_cvv2" id="billing_cvv2" maxlength="4" tabindex="9" placeholder="CVV Number"/>
+            </div>
+            <input class="submit-btn" type="button" id="process_payment" tabindex="10" value="Pay Now"/>
+          </form>
+        </div>
+      </div>
+      <div class="ph-btm-img"> <img src="images/inner-btm-bg.png"/> </div>
+    </div>
+  </div>
+</div>
+<div id="myprofilemenus" class="modal fade menupopup" role="dialog">
+  <div class="modal-dialog">     
+    <div class="modal-content"></div>
+  </div>
+</div>
+<script type="text/javascript" src="https://www.2checkout.com/checkout/api/2co.min.js"></script>
+<script type="text/javascript">
+jQuery(function($) {
+	jQuery('select').selectBoxIt({ });
+	
+	jQuery('#payment_amt').html('LKR. '+ gup('pay_amt'));
+});
+
+
+var errorCallback = function(data) {
+    if (data.errorCode === 200) { 
+	
+	//alert("Sorry, invalid request");    	
+		navigator.notification.alert(
+						"Sorry, invalid request",
+						showNotify, 
+						'Invalid Token',
+						'OK'
+						);
+    } else {
+     //alert(data.errorMsg);
+	  navigator.notification.alert(
+						data.errorMsg,
+						showNotify, 
+						'Invalid Token',
+						'OK'
+						);
+    }
+  };
+
+var tokenRequest = function() {
+      var args = {
+      sellerId: "901363437",
+      publishableKey: "E2BE0C66-D5C5-4CA5-BC63-379A3D04982B",
+      ccNo: $("#billing_card").val(),
+      cvv: $("#billing_cvv2").val(),
+      expMonth: $("#billing_month").val(),
+      expYear: $("#billing_year").val()
+    };
+
+    // Make the token request
+    TCO.requestToken(successCallback, errorCallback, args);
+  };
+
+
+var successCallback = function(data) {
+    //var checkout_frm = document.getElementById('checkout_frm');
+	//alert(data.response.token.token);
+    jQuery("#payment_token").val(data.response.token.token);	
+	
+    // IMPORTANT: Here we call `submit()` on the form element directly instead of using jQuery to prevent and infinite token request loop.
+	
+	//var token_val = data.response.token.token;
+	
+  };
+
+
+jQuery(function($) {
+	 TCO.loadPubKey('sandbox');
+	
+$("#process_payment").on('click', function(e) {
+	
+	jQuery('#payment_token').val('');	
+		
+	var errorMessage = '';
+	var error_ctr = 0;
+	var billing_street = jQuery('#billing_street').val();
+	var billing_city = jQuery('#billing_city').val();
+	var billing_state = jQuery('#billing_state').val();
+	var billing_country = jQuery('#billing_country').val();
+	var billing_zipcode = jQuery('#billing_zipcode').val();
+	var billing_card = jQuery('#billing_card').val();
+	var billing_cvv2 = jQuery('#billing_cvv2').val();
+	var billing_month = jQuery('#billing_month').val();
+	var billing_year = jQuery('#billing_year').val();
+	
+	if(billing_street == "")
+	{
+		errorMessage += 'Please enter street address.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_city == "")
+	{
+		errorMessage += 'Please enter billing city.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_state == "")
+	{
+		errorMessage += 'Please enter billing state.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_country == "")
+	{
+		errorMessage += 'Please select billing country.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_zipcode == "")
+	{
+		errorMessage += 'Please enter post code.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_card == "")
+	{
+		errorMessage += 'Please enter card number.' + "\n";
+		error_ctr++;
+	}else if(!jQuery.isNumeric(billing_card))
+	{
+		errorMessage += 'Please enter valid card number.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_cvv2 == "")
+	{
+		errorMessage += 'Please enter cvv number.' + "\n";
+		error_ctr++;
+	}else if(!jQuery.isNumeric(billing_cvv2))
+	{
+		errorMessage += 'Please enter valid cvv.' + "\n";
+		error_ctr++;
+	}
+
+	if(error_ctr == 0)
+	{
+		tokenRequest();
+		
+		setTimeout(function(){
+		
+		var pay_token = jQuery('#payment_token').val();
+		
+		if(pay_token != "")
+		{
+			
+			var uid = localStorage.getItem('User_ID');
+			
+			var post_url = siteurl+'/api/user/payment';
+			
+			jQuery.ajax({
+				 type: 'POST',
+				 url: post_url,
+				 dataType: 'json',
+				 data: {pay_ction : 'charge', user_id : uid, booking_id : gup('trip_id'), amount : gup('pay_amt'), pay_token : pay_token, billing_street : billing_street, billing_city : billing_city, billing_state : billing_state, billing_country: billing_country, billing_zipcode: billing_zipcode},
+				 crossDomain: true,
+				 success: function(data){
+					
+					if(data['success'])
+					{
+						window.location = data['success'];
+					}else if(data['error'])
+					{
+						navigator.notification.alert(
+						data['error'],
+						showNotify,
+						'Payment Error!!',
+						'OK'
+						);
+					}					
+				 }
+			 });		
+		}
+		
+		},3000);
+		
+		
+					
+	}else if(error_ctr > 0){
+		
+		navigator.notification.alert(
+						errorMessage,
+						showNotify, 
+						'Payment Error!!',
+						'OK'
+						);
+		return false;
+	}
+	});
+});
+
+
+function showNotify(){
+	return true;
+}
+</script>
+</body>
+</html>

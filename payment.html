@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clap Me</title>
+<link href="css/style.css" type="text/css" rel="stylesheet">
+<link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link type="text/css" rel="stylesheet" href="css/jquery.selectBoxIt.css" />
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.selectBoxIt.min.js"></script>
+
+
+
+</head>
+
+<body>
+<div class="wrapper addcart payment">
+
+  <div class="container">
+  <header>
+  <a href="#" data-toggle="modal" data-target="#myprofilemenus"><img src="images/menu.png"/>Payment</a>
+  </header>
+    <div class="innerpage payment-inner">
+	<div class="innermidbox">
+	<!--<div class="log-reg">
+	<img src="images/clap-logo.png"/>
+	
+	</div>-->
+	
+		<div class="addcart">	
+	
+
+<form class="loginfrm">
+<div class="biling-amount">Billing Amount: <span>1600</span></div>
+<h1>Billing Address</h1>
+<div class="bling-dtl">
+<input type="text" name="billing_street" id="billing_street" tabindex="1" placeholder="Please enter street address."/>
+              <input class="second-box" type="text" name="billing_city" id="billing_city" tabindex="2" placeholder="Please enter billing city."/>
+              <input class="second-box lst-scnd" type="text" name="billing_state" id="billing_state" tabindex="3" placeholder="Please enter billing state."/>
+              <input class="second-box" type="text" name="billing_country" id="billing_country" tabindex="4" placeholder="Please enter billing country"/>
+              <input class="second-box lst-scnd" type="text" name="billing_zipcode" id="billing_zipcode" tabindex="5" placeholder="Please enter billing post code."/>
+</div>
+
+
+<h1>Card Detial</h1>
+<div class="bling-dtl">
+<input type="text" placeholder="Card Number"/>
+<div class="second-box sltboxmain">
+<select name="billing_month" id="billing_month"> 
+<option value="01">Jan</option>
+<option value="02">February</option>
+<option value="03">March</option>
+<option value="04">April</option>
+<option value="05">May</option>
+<option value="06">June</option>
+<option value="07">July</option>
+<option value="08">August</option>
+<option value="09">September</option>
+<option value="10">October</option>
+<option value="11">November</option>
+<option value="12">December</option>
+</select>
+</div>
+
+<div class="second-box lst-scnd sltboxmain">
+<select name="billing_year" id="billing_year">
+<option value="dd">Year</option>
+<option value="month1">2017</option>
+<option value="month2">2016</option>
+<option value="month3">2015</option>
+<option value="month4">2014</option>
+</select>
+</div>
+<input type="text" name="billing_cvv2" id="billing_cvv2" tabindex="9" placeholder="CVV Number"/></div>
+<input class="submit-btn" type="submit" value="ADD CART"/>
+
+</form>
+</div>
+    </div>
+
+	<div class="ph-btm-img">
+	<img src="images/inner-btm-bg.png"/>
+	</div>
+	</div>
+  </div>
+</div>
+
+
+
+<div id="myprofilemenus" class="modal fade menupopup" role="dialog">
+  <div class="modal-dialog">     
+    <div class="modal-content"></div>
+  </div>
+</div>
+
+
+<script>
+jQuery(function($) {
+jQuery('select').selectBoxIt({ });
+});
+</script>
+</body>
+</html>

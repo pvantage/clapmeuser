@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Clap Me</title>
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" href="css/owl.carousel.min.css">
+  <link href="css/bootstrap.min.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" href="css/jquery-ui.css"/>
+  <link href="css/timepicki.css" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/jquery.selectBoxIt.css" />
+  <script src="js/jquery.min.js"></script>
+  <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+  <script src="js/timepicki.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/owl.carousel.js"></script>
+  <script src="js/jquery-ui.js"></script>
+  <!--<script src="js/jquery-ui.min.js"></script>-->
+  <script src="js/tabcontent.js" type="text/javascript"></script>
+  <script src="js/jquery.selectBoxIt.min.js"></script>
+  <script type="text/javascript">
+  jQuery( function() {
+    jQuery( "#datepicker, #package_datepicker" ).datepicker();
+	jQuery('#timepicker1, #package_timepicker').timepicki();
+	
+  } );
+  
+  function checkDevice(){
+		document.addEventListener("deviceready", onDeviceReady, false);
+}
+
+function onDeviceReady() {
+ 		return true;
+  }
+
+  </script>
+  </head>
+  <body onLoad="checkDevice();">
+<div class="wrapper picuplocation">
+    <div class="container">
+    <header><a href="#" data-toggle="modal" data-target="#myprofilemenus"><img src="images/menu.png"/>Clap Me</a></header>
+    <div class="innerpage">
+        <div class="innermidbox picupmid">
+        <div class="picup-vehicle">
+            <div class="map-box" id="gmap"> </div>
+            <div class="map-locationbox">
+            <div class="map-inputbox">
+                <input type="hidden" name="from_lati" id="from_lati" value="" />
+                <input type="hidden" name="from_longi" id="from_longi" value="" />
+                <input type="hidden" name="desti_lati" id="desti_lati" value="" />
+                <input type="hidden" name="desti_longi" id="desti_longi" value="" />
+                <input type="hidden" name="vtype_id" id="vtype_id" value="">
+                <input type="hidden" name="searchvtype_id" id="searchvtype_id" value="">
+                <input type="hidden" name="vehicle_company_id" id="vehicle_company_id" value="">
+                <input type="hidden" name="vehicle_brand_id" id="vehicle_brand_id" value="">
+                <input type="hidden" name="vehicle_color_id" id="vehicle_color_id" value="">
+                <input type="text" class="mylox" id="mylox" tabindex="1" placeholder="Enter Pick Up Location"/>
+                <input class="go" type="submit" value="" tabindex="2" />               
+                <input type="text" class="drop-loc" tabindex="3" id="drop-loc" placeholder="Enter Drop Off Location"/>
+                <input type="hidden" name="promo_code" id="promo_code">
+                <div class="fromlocation setlocations" style="display:none;"></div>
+                <div class="tolocation setlocations" style="display:none;"></div>
+              </div>
+          </div>
+            <a class="filtericon" href="javascript:;"><img src="images/filter.png"/></a>
+            <div class="map-cnt" id="car_type">
+            <ul>
+                <div class="owl-carousel"></div>
+              </ul>
+          </div>
+            <div class="map-cnt mapconfirmbooking bknpopup" id="book_now_prop" style="display:none;">
+            <div id="show_estimated_cost"> </div>
+            <div class="pic-cash">
+                <div class="cashbox"><a href="javascript:;" data-toggle="modal" data-target="#cashpopbox"><img src="images/pic-cash.png"/>CASH <img class="csh-drp" src="images/drop-right-icon.png"/></a></div>
+                <div class="cashbox"><a href="javascript:;" data-toggle="modal" data-target="#promobox"><img src="images/promo.png"/>Promo Code</a></div>
+              </div>
+            <div class="bk-data nidbox">
+                <ul class="clapaddr-info">
+                <h1>Fare Details</h1>
+                <li>
+                    <label>Min Fare (First 1 km)</label>
+                    <span id="first_km_price">LKR 0.00</span> </li>
+                <li>
+                    <label><img src="images/dis.png"/>After 1km (per 1 km)</label>
+                    <span id="after_first_km_price">LKR 0.00</span></li>
+                <li>
+                    <label><img src="images/ck.png"/>Waiting time (per 1 hour)</label>
+                    <span id="waiting_time_price">LKR 0.00</span> </li>
+                <li id="vehicle_cost"></li>
+              </ul>
+              </div>
+            <div class="bookingbtn"><a href="javascript:;" id="booknowtrip" onClick="booking_confirm_now();" class="submit-btn boknw">Confirm</a> <a href="javascript:;" class="submit-btn" onClick="cancel_booking();">Cancel</a> </div>
+          </div>
+            <!-- End --> 
+            
+            <!-- Book Later -->
+            <div id="book_later" class="map-cnt mapconfirmbooking" style="display:none">
+            <div class="pickdate-time">
+                <div class="picdate"><span>PICKUP DATE</span>
+                <input class="dpickr" name="pick_up_date" type="text" id="datepicker">
+              </div>
+                <div class="pictime"><span>PICKUP TIME</span>
+                <input class="dpickr" name="pick_up_time" id="timepicker1" type="text" name="timepicker1" />
+              </div>
+              </div>
+            
+            <!--- vehicle -->
+            <div id="book_later_carsual">
+                <ul>
+                <div class="owl-carousel"></div>
+              </ul>
+              </div>
+            <!--- end -->
+            
+            <div class="bookingbtn"><a href="javascript:;" onClick="return booking_confirm_later();" class="submit-btn boknw">Confirm Booking</a> </div>
+          </div>
+            <!-- end --> 
+            
+          </div>
+        <div class="bookingbtn" id="default_book_btn" style="display:none;"> <a href="javascript:;" onClick="booknowtrip();" class="submit-btn boknw">book now</a> <a href="javascript:;" class="submit-btn" onClick="booknow_later();">book later</a> </div>
+      </div>
+      </div>
+  </div>
+    
+    <!-- Modal -->
+    <div id="myprofilemenus" class="modal fade menupopup" role="dialog">
+    <div class="modal-dialog"> 
+        
+        <!-- Modal content-->
+        <div class="modal-content"> </div>
+      </div>
+  </div>
+    
+    <!--Package Popup Start Here--> 
+    
+    <!-- Modal -->
+    <div id="packagepopup" class="modal fade packagepop-main" role="dialog">
+    <div class="modal-dialog"> 
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Custom Package
+            <button type="button" class="close" data-dismiss="modal">Cancel</button>
+          </h4>
+          </div>
+        <div class="modal-body">
+            <div class="pkg-topbox">
+            <div class="map-locationbox pic-detail">
+                <h1>Pickup Location</h1>
+                <input type="text" class="mylox" id="package_pickup_address" name="package_pickup_address" placeholder="Please enter your pick up location"/>
+              </div>
+            <div class="pickdate-time">
+                <div class="picdate pkdte"><span>Pickup Date</span>
+                <input class="dpickr" name="package_pick_up_date" type="text" id="package_datepicker">
+              </div>
+                <div class="pictime"><span>Pickup Time</span>
+                <input class="dpickr" name="package_pick_up_time" id="package_timepicker" type="text"/>
+                <input  name="package_car_type" id="package_car_type" type="hidden" />
+                <input  name="selected_package_id" id="selected_package_id" type="hidden" />
+              </div>
+              </div>
+            <div class="pck-crousal map-cnt" id="pkgcar_type"></div>
+            <div class="arrowmain">
+                <div class="arrow-cabbtm"></div>
+              </div>
+          </div>
+            <div class="historytabs pkg-hrs-dtl">
+            <ul class="tabs" data-persist="true">
+                <li><a href="#view_hourly">Hours</a></li>
+                <li><a href="#view_day_package">Days</a></li>
+              </ul>
+            <div class="tabcontents"> 
+                
+                <!---------- START HOURLY Tab -->
+                <div id="view_hourly"></div>
+                
+                <!--- END HOURLY TAB --> 
+                
+                <!--- start day package -->
+                
+                <div id="view_day_package"></div>
+                
+                <!--------- end day package --> 
+                
+              </div>
+          </div>
+          </div>
+      </div>
+      </div>
+  </div>
+    
+    <!--Package Popup End Here--> 
+    
+    <!--Package Detail End Here-->
+    <div id="package-detailpopup" class="modal fade pkg-dtl-popup" role="dialog">
+    <div class="modal-dialog"> 
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Confirm Package
+            <button type="button" class="close" data-dismiss="modal">Cancel</button>
+          </h4>
+          </div>
+        <div class="modal-body" id="package_detail_body"></div>
+      </div>
+      </div>
+  </div>
+    <!--Package Detail Popup End Here--> 
+    
+    <!--Payment Option -->
+    <div id="cashpopbox" class="modal fade pkg-dtl-popup cashpopupbox" role="dialog">
+    <div class="modal-dialog"> 
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Payment
+            <button type="button" class="close" data-dismiss="modal">x</button>
+          </h4>
+          </div>
+        <div class="modal-body">
+            <div class="innermidbox">
+            <div class="addpaymentbox">
+                <h1>Payment Method</h1>
+                <ul class="paymentoption">
+                <li><a href="javascript:;" onClick="choosePayment('card');"><img class="cashimg" src="images/card.png"/>Card <img class="arrow" src="images/arrow.png"/></a></li>
+                <li><a href="javascript:;" onClick="choosePayment('cash');"><img class="cashimg" src="images/cash.png"/>Cash <img class="arrow" src="images/arrow.png"/></a></li>
+              </ul>
+              </div>
+          </div>
+          </div>
+      </div>
+      </div>
+  </div>
+    <!--Cash Dropbox Popup End Here--> 
+    
+    <!--Promo Popup Start Here-->
+    <div id="promobox" class="modal fade pkg-dtl-popup promopopbox" role="dialog">
+    <div class="modal-dialog"> 
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Enter Your Promo Code
+            <button type="button" class="close" data-dismiss="modal">x</button>
+          </h4>
+          </div>
+        <div class="modal-body">
+            <div class="innermidbox promo-b">
+            <input type="text" id="user_promo" maxlength="15" placeholder="Enter Promo Code">
+            <input class="submit-btn" type="submit" onClick="checkPromo();" value="Submit"/>
+          </div>
+          </div>
+      </div>
+      </div>
+  </div>
+    <!--Promo Popup End Here--> 
+    
+    <!--Add Card Info -->
+    <div id="cardpopbox" class="modal fade pkg-dtl-popup cardpopsbox" role="dialog">
+    <div class="modal-dialog"> 
+        
+        <!-- Modal content-->
+        <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Billing Details
+            <!--<button type="button" class="close" data-dismiss="modal">x</button>-->
+          </h4>
+          </div>
+        <div class="modal-body">
+            <div class="innerpage payment-inner">
+            <div class="innermidbox">
+                <div class="addcart">
+                <form class="loginfrm" id="checkout_frm">
+                    <h1>Billing Address</h1>
+                    <div class="bling-dtl">
+                    <input type="hidden" name="payment_token" id="payment_token">
+                    <input type="text" name="billing_street" id="billing_street" tabindex="1" placeholder="Enter street address"/>
+                    <input class="second-box" type="text" name="billing_city" id="billing_city" tabindex="2" placeholder="Enter billing city"/>
+                    <input class="second-box lst-scnd" type="text" name="billing_state" id="billing_state" tabindex="3" placeholder="Enter billing state"/>
+                    <input class="second-box" type="text" name="billing_country" id="billing_country" tabindex="4" placeholder="Enter billing country"/>
+                    <input class="second-box lst-scnd" type="text" name="billing_zipcode" id="billing_zipcode" maxlength="7" tabindex="5" placeholder="Enter billing post code"/>
+                  </div>
+                    <h1>Credit Card Detail</h1>
+                    <div class="bling-dtl">
+                    <input type="number" name="billing_card" id="billing_card" tabindex="6" maxlength="16" placeholder="Card Number"/>
+                    <div class="second-box sltboxmain">
+                        <select name="billing_month" id="billing_month">
+                        <option value="01">Jan</option>
+                        <option value="02">February</option>
+                        <option value="03">March</option>
+                        <option value="04">April</option>
+                        <option value="05">May</option>
+                        <option value="06">June</option>
+                        <option value="07">July</option>
+                        <option value="08">August</option>
+                        <option value="09">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                      </select>
+                      </div>
+                    <div class="second-box lst-scnd sltboxmain">
+                        <select name="billing_year" id="billing_year">
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                        <option value="2028">2028</option>
+                        <option value="2029">2029</option>
+                        <option value="2030">2030</option>
+                        <option value="2031">2031</option>
+                        <option value="2032">2032</option>
+                        <option value="2033">2033</option>
+                        <option value="2034">2034</option>
+                        <option value="2035">2035</option>
+                        <option value="2036">2036</option>
+                        <option value="2037">2037</option>
+                        <option value="2038">2038</option>
+                        <option value="2039">2039</option>
+                        <option value="2040">2040</option>
+                      </select>
+                      </div>
+                    <input type="number" name="billing_cvv2" id="billing_cvv2" maxlength="4" tabindex="9" placeholder="CVV Number"/>
+                  </div>
+                    <input class="submit-btn" type="button" id="process_payment" onClick="booking_card();" tabindex="10" value="Submit"/>
+                  </form>
+              </div>
+              </div>
+            <div class="ph-btm-img"> <img src="images/inner-btm-bg.png"/> </div>
+          </div>
+          </div>
+      </div>
+      </div>
+  </div>
+    <!--card  Popup End Here--> 
+  </div>
+<div id="screen_msg">
+    <div class="showmessage">No vehicle found...</div>
+  </div>
+<script type="text/javascript" src="js/config.js"></script> 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdRw4y6QbeCa2AVoQcI_j7NMQZPYDrabU&libraries=geometry" type="text/javascript"></script>
+<script type="text/javascript" src="https://www.2checkout.com/checkout/api/2co.min.js"></script> 
+<script type="text/javascript">
+	jQuery(document).ready(function(){
+		jQuery( document ).on( "mobileinit", function() {
+			jQuery.mobile.allowCrossDomainPages = true;
+		});
+		var contentType ="application/x-www-form-urlencoded; charset=utf-8";
+		if(window.XDomainRequest){contentType = "text/plain";}
+		jQuery.support.cors = true;
+		
+		var trip_vtypeids = gup('vtypeids');
+		if(typeof trip_vtypeids != 'undefined' && trip_vtypeids!=null && trip_vtypeids!=''){
+			jQuery('#searchvtype_id').val(trip_vtypeids);
+		}
+		
+		var trip_company_id = gup('company_id');
+		if(typeof trip_company_id != 'undefined' && trip_company_id != null && trip_company_id !=''){
+			jQuery('#vehicle_company_id').val(trip_company_id);
+		}
+		
+		var trip_brand_id = gup('brand_id');
+		if(typeof trip_brand_id != 'undefined' && trip_brand_id != null && trip_brand_id != ''){
+			jQuery('#vehicle_brand_id').val(trip_brand_id);
+		}
+		var trip_color_id = gup('color_id');
+		
+		if(typeof trip_color_id != 'undefined' && trip_color_id != null && trip_color_id != ''){
+			jQuery('#vehicle_color_id').val(trip_color_id);
+		}
+		var h=jQuery(window).height();
+		jQuery('.picuplocation').css({'height':h+'px','overflow':'hidden'});
+		jQuery('#gmap').css({'height':h+'px','overflow':'hidden'});
+		jQuery('.filtericon').click(function(){
+			var from_lati = jQuery('#from_lati').val();
+			var from_longi = jQuery('#from_longi').val();
+			window.location='filter.html?from_lati='+from_lati+'&from_longi='+from_longi;
+		});
+	});
+	
+	var speed = 50; // km/h
+	var delay = 100;
+	var map;
+	var marker;	
+	var markers = [];
+	var startPos = [];
+		
+	 var onSuccess = function(position) {		
+		localStorage.setItem('User_Lat',position.coords.latitude);
+		localStorage.setItem('User_Long',position.coords.longitude);		
+		jQuery('#from_lati').val(position.coords.latitude);
+		jQuery('#from_longi').val(position.coords.longitude);
+		
+		initMap();		
+    };
+	
+	 function onError(error) {
+		}
+		
+	 var lati = localStorage.getItem('User_Lat');
+	 if(typeof lati=='undefined' || lati==null || lati==''){
+		navigator.geolocation.getCurrentPosition(onSuccess, onError);		
+	}
+	
+	//
+	
+	
+function animateMarker(marker, coords, km_h)
+{
+    var target = 0;
+    var km_h = km_h || 50;
+    coords.push([startPos[0], startPos[1]]);
+    
+    function goToPoint()
+    {
+		
+        var lat = marker.position.lat();
+        var lng = marker.position.lng();
+        var step = (km_h * 1000 * delay) / 3600000; // in meters
+        
+        var dest = new google.maps.LatLng(
+        coords[target][0], coords[target][1]);
+        
+        var distance =
+        google.maps.geometry.spherical.computeDistanceBetween(
+        dest, marker.position); // in meters
+        
+        var numStep = distance / step;
+        var i = 0;
+        var deltaLat = (coords[target][0] - lat) / numStep;
+        var deltaLng = (coords[target][1] - lng) / numStep;
+        
+        function moveMarker()
+        {
+            lat += deltaLat;
+            lng += deltaLng;
+            i += step;
+           
+            if (i < distance)
+            {
+				
+                marker.setPosition(new google.maps.LatLng(lat, lng));
+                setTimeout(moveMarker, delay);
+            }
+            else
+            {   marker.setPosition(dest);
+                target++;
+                if (target == coords.length){ target = 0; }
+                
+                //setTimeout(goToPoint, delay);
+            }
+        }
+        moveMarker();
+    }
+    goToPoint();
+}
+
+// end marker
+	
+	
+	
+	
+	
+	function initMap() {
+		
+		var latitude2 = parseFloat(localStorage.getItem('User_Lat'));
+		var longitude2 = parseFloat(localStorage.getItem('User_Long'));
+		
+        map = new google.maps.Map(document.getElementById('gmap'), {
+          zoom: 16,
+		  mapTypeControl: false,
+		  disableDefaultUI: true,
+          center: {lat: latitude2, lng: longitude2}
+        });
+        var geocoder = new google.maps.Geocoder;
+        var infowindow = new google.maps.InfoWindow;
+		
+        //document.getElementById('submit').addEventListener('click', function() {
+          geocodeLatLng(geocoder, map, infowindow,latitude2,longitude2);
+        //});
+		
+		
+		
+      };
+		function geocodePosition(pos) {
+			var geocoder = new google.maps.Geocoder();
+		  geocoder.geocode({
+			latLng: pos
+		  }, function(responses) {
+			if (responses && responses.length > 0) {
+				//alert(JSON.stringify(pos));
+			  jQuery('.map-locationbox input.mylox').val(responses[0].formatted_address);
+			} else {
+			  alert('Cannot determine address at this location.');
+			}
+		  });
+		};
+		
+      function geocodeLatLng(geocoder, map, infowindow,latitude2,longitude2) {
+	  	
+		var latlng = {lat: parseFloat(latitude2), lng: parseFloat(longitude2)};
+        geocoder.geocode({'location': latlng}, function(results, status) {
+          if (status === 'OK') {
+            if (results[0]) {
+              map.setZoom(16);
+			  var marker = new google.maps.Marker({
+                position: latlng,
+                map: map,
+				icon: 'images/clapicon.png',
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+
+              });
+			 
+			 jQuery('#from_lati').val(latitude2);
+			jQuery('#from_longi').val(longitude2);
+			
+			google.maps.event.addListener(map, 'center_changed', function() {
+                
+                window.setTimeout(function() {
+                  var center = map.getCenter();
+                  marker.setPosition(center);
+				  var newLat = marker.getPosition().lat();
+ 					var newLng = marker.getPosition().lng();
+					jQuery('#from_lati').val(newLat);
+					jQuery('#from_longi').val(newLng);
+					//geocodePosition(marker.getPosition());
+                }, 50);
+            });
+			
+			
+				
+              //infowindow.setContent(results[0].formatted_address);
+			  //jQuery('.map-locationbox input.mylox').val(results[0].formatted_address);
+			  jQuery('.map-locationbox input.mylox').attr('placeholder',results[0].formatted_address);
+			  
+               google.maps.event.addListener(map, 'dragend', function (event) {
+					geocodePosition(marker.getPosition());
+					var newLat = marker.getPosition().lat();
+ 					var newLng = marker.getPosition().lng();
+					jQuery('#from_lati').val(newLat);
+					jQuery('#from_longi').val(newLng);					
+					checkdrivers(map);
+					//marker.setPosition( latlng );					
+							
+				});
+			  //addMarker(latlng, map, 'images/pointer.png', 'me',results);			  
+			 
+              checkdrivers(map);
+			  
+			  
+            } else {
+              window.alert('No results found');
+            }
+          } else {
+            window.alert('Geocoder failed due to: ' + status);
+          }
+        });
+      
+	  }
+	  function setMapOnAll(map) {
+        for (var i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+        }
+      }
+
+      // Removes the markers from the map, but keeps them in the array.
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+	  function updatelocation(map, markers,userlist){
+	  	var url=siteurl+'/api/user/locations';
+			var from_lati=jQuery('#from_lati').val();
+			var from_longi=jQuery('#from_longi').val();
+			var vtype_id=jQuery('#searchvtype_id').val();
+			var company_id=jQuery('#vehicle_company_id').val();
+			var brand_id=jQuery('#vehicle_brand_id').val();
+			var color_id=jQuery('#vehicle_color_id').val();
+			
+			//
+			
+			var desti_lati = jQuery('#desti_lati').val();
+			var desti_longi = jQuery('#desti_longi').val();
+			
+	  		jQuery.ajax({  
+				 type: 'POST',  
+				 url: url,  
+				 //contentType: contentType,  
+				 dataType: 'json',  
+				 data: {latitude:from_lati, vtype_id:vtype_id, longitude:from_longi,driverlist:1, company_id:company_id, brand_id:brand_id, color_id:color_id, desti_lati:desti_lati, desti_longi:desti_longi},
+				 crossDomain: true,  
+				 beforeSend: function() {
+					
+				 },		
+				 complete: function() {
+				 	
+				 },
+				 success: function(res) { 
+				 	if(res['responce']){
+						var userlist2=[];
+						var markers3=[];
+						jQuery(res['responce']).each(function(index){
+							if(res['responce'][index]['current_lati']!='null' && res['responce'][index]['current_lati']!=null){
+								var check = userlist.indexOf(res['responce'][index]['id']);
+								if(check!='-1'){
+									
+									var marker2 = markers[check];
+									markers3.push(marker2);
+									userlist2.push(res['responce'][index]['id']);
+									/*google.maps.event.addListenerOnce(map, 'idle', function()
+									{
+										animateMarker(marker, [						
+											[res['responce'][index]['current_lati'], res['responce'][index]['current_longi']]
+										], 100);					
+									});	*/
+									var oldlati=res['responce'][index]['old_lati'];
+									var oldlongi=res['responce'][index]['old_longi'];
+									var newlati=res['responce'][index]['current_lati'];
+									var newlongi=res['responce'][index]['current_longi'];
+									//alert(marker2.position.lat());
+									if(oldlati!=newlati && oldlongi!=newlongi){
+										//alert(marker2.position.lat());
+										oldlati=newlati;
+										oldlongi=newlongi;
+										//google.maps.event.addListenerOnce(map, 'idle', function(){
+											animateMarker(marker2, [
+												[newlati, newlongi]
+											], speed);
+										//});
+									}
+								}
+												
+								//
+							}
+							
+						});						
+						var stinterval=setTimeout(function(){updatelocation(map, markers3,userlist2);},5000);
+						//clearInterval(stinterval);
+					}
+									
+				 }
+			});
+	  }
+	  function checkdrivers(map){
+	  		var url=siteurl+'/api/user/locations';
+			var from_lati=jQuery('#from_lati').val();
+			var from_longi=jQuery('#from_longi').val();
+			var vtype_id=jQuery('#searchvtype_id').val();
+			var company_id=jQuery('#vehicle_company_id').val();
+			var brand_id=jQuery('#vehicle_brand_id').val();
+			var color_id=jQuery('#vehicle_color_id').val();
+			
+			//
+			
+			var desti_lati = jQuery('#desti_lati').val();
+			var desti_longi = jQuery('#desti_longi').val();
+									
+			jQuery('#default_book_btn').hide();			
+			
+			jQuery('.map-cnt').removeAttr('style');
+	  		jQuery.ajax({  
+				 type: 'POST',  
+				 url: url,  
+				 //contentType: contentType,  
+				 dataType: 'json',  
+				 data: {latitude:from_lati, vtype_id:vtype_id, longitude:from_longi,driverlist:1, company_id:company_id, brand_id:brand_id, color_id:color_id, desti_lati:desti_lati, desti_longi:desti_longi},
+				 crossDomain: true,  
+				 beforeSend: function() {
+				 	//jQuery('body .showmessage').remove();
+					//var html='<div class="showmessage">Checking Vehicles...</div>';
+					//jQuery('body').append(html);				
+					
+					jQuery('#screen_msg').html('<div class="showmessage">Please wait...</div>');
+					
+				 },		
+				 complete: function() {
+				 	
+				 },
+				 success: function(res) { 
+				 	//setTimeout(function(){jQuery('.showmessage').slideUp();},500);
+					jQuery('#screen_msg').html('');
+					clearMarkers();
+					
+				 	if(res['responce']){
+						var userlist=[];
+						jQuery(res['responce']).each(function(index){
+							if(res['responce'][index]['current_lati']!='null' && res['responce'][index]['current_lati']!=null){
+								var img='images/nano.png';
+								if(jQuery.trim(res['responce'][index]['photo'])!=''){
+									img=res['responce'][index]['photo'];
+								}
+								var latLng2 = new google.maps.LatLng(res['responce'][index]['old_lati'], res['responce'][index]['old_longi']);
+									var marker = new google.maps.Marker({
+										position: latLng2,
+										map: map,
+										icon: img,
+									});
+								marker.setPosition( latLng2 );
+								markers.push(marker);
+								userlist.push(res['responce'][index]['id']);
+								
+								/*google.maps.event.addListenerOnce(map, 'idle', function()
+								{
+									animateMarker(marker, [						
+										[res['responce'][index]['current_lati'], res['responce'][index]['current_longi']]
+									], 100);					
+								});	*/				
+								//
+							}
+							
+						});						
+						var stinterval=setTimeout(function(){updatelocation(map, markers,userlist);},5000);
+						setTimeout(function(){clearInterval(stinterval);},7000);
+						if(jQuery('#mylox').val()!=''){
+							jQuery('#default_book_btn').show();
+							jQuery('.map-cnt').css({'bottom':'10%'});
+						}
+						
+						if(jQuery('#drop-loc').val()!='')
+						{
+							if(res['estimated_min_price'])
+							{
+								var estimated_cost = '<div class="get-estimateblock"><h1>Estimated Amount</h1>';
+									estimated_cost += '<h2>LKR '+res['estimated_min_price']+' - '+res['estimated_max_price']+'</h2>';
+									estimated_cost += '<p>To get an estimation please enter the Drop off location</p>';
+									estimated_cost += '</div>';
+								
+								
+								jQuery('#show_estimated_cost').html(estimated_cost);	
+								
+							}							
+						}
+					}
+					else
+					{
+						/*setTimeout(function(){
+							jQuery('body .showmessage').remove();
+							var html='<div class="showmessage">No Vehicle Found.</div>';
+							jQuery('body').append(html);
+							setTimeout(function(){jQuery('.showmessage').slideUp();},500);							
+						},500);*/
+						
+						jQuery('#screen_msg').html('<div class="showmessage">No vehicle found...</div>');
+					}
+					
+					
+					show_filter_vehicle();
+					getPackage();					
+				 }
+			});
+	  }
+	initMap();  
+	  
+		function showvehicletypes(){
+	  		var url=siteurl+'/api/user/locations';
+			var from_lati=jQuery('#from_lati').val();
+			var from_longi=jQuery('#from_longi').val();
+			var vtype_id=jQuery('#vtype_id').val();
+	  		jQuery.ajax({  
+				 type: 'POST',  
+				 url: url,  
+				 //contentType: contentType,  
+				 dataType: 'json',  
+				 data: {latitude:from_lati, longitude:from_longi, vtype_id: vtype_id,vehicletypes:1},
+				 crossDomain: true,  
+				 beforeSend: function() {
+				 	//jQuery('body .showmessage').remove();
+					//var html='<div class="showmessage">Checking Vehicles...</div>';
+					//jQuery('body').append(html);
+					
+					jQuery('#screen_msg').html('<div class="showmessage">Please wait...</div>');
+					
+				 },		
+				 complete: function() {
+				 	
+				 },
+				 success: function(res) { 
+				 	//setTimeout(function(){jQuery('.showmessage').slideUp();},500);
+					jQuery('#screen_msg').html('');
+					
+					clearMarkers();
+				 	
+					if(res['responce']){
+						
+						var html = '<ul><div class="owl-carousel">';						
+						var html_pkg = '<ul><div class="owl-carousel">';
+						
+						jQuery(res['responce']).each(function(index){
+							html += '<li class="item">';							
+							html_pkg += '<li class="item">';							
+							
+						html += '<a class="link_'+res['responce'][index]['id']+'" href="javascript:;" data-id="'+res['responce'][index]['id']+'">';
+						
+						html_pkg += '<a class="link_'+res['responce'][index]['id']+'" href="javascript:;" data-id="'+res['responce'][index]['id']+'">';
+						
+							
+							if(res['responce'][index]['traveltime']){
+								html += '<span class="nocabs">' + res['responce'][index]['traveltime'] +'</span>';
+							}else{
+								html += '<span class="nocabs">no cabs</span>';
+							}
+							
+							if(res['responce'][index]['footerimage']!='null' && res['responce'][index]['footerimage']!=null){
+								html+='<div class="cabimg-box"><img src="'+res['responce'][index]['footerimage']+'" alt=""></div><span>'+res['responce'][index]['vtype']+'</span>';
+								
+								html_pkg +='<div class="cabimg-box"><img src="'+res['responce'][index]['footerimage']+'" alt=""></div><span>'+res['responce'][index]['vtype']+'</span>';
+								
+							}
+							
+							html+='</a></li>';
+							
+							html_pkg += '</a></li>';
+							
+						});
+						
+						html += '<li class="item"><a class="show_pkg" href="javascript:;" data-id="show_pkg"><span class="nocabs">Package</span><div class="cabimg-box"><img src="images/package.png"></div></a></li>';
+						
+						html += '</div></ul>';
+						
+						html_pkg += '</div></ul>';
+						
+						
+						jQuery('#car_type').html(html);			
+						jQuery('#book_later_carsual').html(html);
+						
+						//
+						
+						jQuery('#pkgcar_type').html(html_pkg);
+						
+						
+						
+						if(res['vtype_id'])
+						{						
+							jQuery('.link_' + res['vtype_id']).closest('div').addClass('active');
+							jQuery('.link_' + res['vtype_id']).parent('li').addClass('active');											
+						}
+						
+						
+						var owl = $('.owl-carousel');
+						  owl.owlCarousel({
+							margin: 10,
+							loop: true,
+							items: 4,
+							loop: false,
+							responsive: {
+							  0: {
+								items: 4
+							  },
+							  600: {
+								items: 4
+							  },
+							  1000: {
+								items: 4
+							  }
+							}
+						  });
+						  
+						  jQuery('#book_later_carsual .owl-carousel li a, #car_type .owl-carousel li a').click(function(){
+						  	jQuery('.owl-carousel li').removeClass('active');
+							jQuery(this).parent('li').addClass('active');							
+							
+							if(jQuery(this).attr('data-id') != 'show_pkg')
+							{
+								jQuery('#searchvtype_id').val(jQuery(this).attr('data-id'));							
+								//jQuery('#package_car_type').val(jQuery(this).attr('data-id'));						
+								checkdrivers(map);
+							}else if(jQuery(this).attr('data-id') == 'show_pkg')
+							{
+								
+								$("#packagepopup").modal('show');	
+							}
+						});
+						
+						
+						jQuery('#pkgcar_type .owl-carousel li a').click(function(){								
+							jQuery('#package_car_type').val(jQuery(this).attr('data-id'));							
+							 getPackage();	
+						});
+						
+						
+					}
+					else
+					{
+						/*setTimeout(function(){
+							jQuery('body .showmessage').remove();
+							var html='<div class="showmessage">No Vehicle</div>';
+							jQuery('body').append(html);
+							setTimeout(function(){jQuery('.showmessage').slideUp();},500);
+						},500);*/
+						jQuery('#screen_msg').html('<div class="showmessage">No vehicle found...</div>');						
+					}
+				 	}
+				 });
+	  	}
+	  
+setTimeout(function(){
+	//showvehicletypes();	
+},1000);
+
+	jQuery(document).ready(function(){
+		
+		
+		// DEFAULT DATE TIME
+		
+		
+		var today = new Date();
+		var dd = today.getDate();
+		var mm = today.getMonth()+1;
+		var yyyy = today.getFullYear();
+		
+		var current_hour = today.getHours();
+		var current_min = today.getMinutes();
+		
+		var make_date = mm + '/' + dd + '/' +yyyy;
+		
+		var current_time = (current_hour > 12) ? (current_hour-12 + ':' + current_min +' PM') : (current_hour + ':' + current_min +' AM');
+		
+		jQuery('input[name="pick_up_date"]').val(make_date);		
+		jQuery('input[name="pick_up_time"]').val(current_time);		
+		jQuery('input[name="package_pick_up_date"]').val(make_date);		
+		jQuery('input[name="package_pick_up_time"]').val(current_time);		
+		
+		// END
+		
+		
+		
+		jQuery('#mylox').keyup(function(event){
+			if(event.keyCode==13){
+				return false;
+			}
+			var fromtext=jQuery(this).val();
+			if(jQuery.trim(fromtext)!=''){
+				jQuery('.tolocation').hide();
+				jQuery('.fromlocation').show();	
+				var url=siteurl+'/api/user/locations';
+				jQuery.ajax({  
+				 type: 'GET',  
+				 url: url,  
+				 //contentType: contentType,  
+				 dataType: 'json',  
+				 data: {input:fromtext,searchlocation:1},
+				 crossDomain: true,  
+				 beforeSend: function() {
+				 	
+				 },		
+				 complete: function() {
+				 	
+				 },
+				 success: function(res) { 
+				 	var html=''; 
+					
+					var first_km_price = 'LKR 0.00';
+					var after_first_km_price = 'LKR 0.00';
+					var waiting_time_price = 'LKR 0.00';
+					
+					if(res['price']['first_km_price']){
+						first_km_price = 'LKR ' + parseFloat(res['price']['first_km_price']);
+					}
+					
+					if(res['price']['after_first_km_price']){
+						after_first_km_price = 'LKR ' + parseFloat(res['price']['after_first_km_price']);
+					}
+					
+					if(res['price']['waiting_time']){
+						waiting_time_price = 'LKR ' + parseFloat(res['price']['waiting_time']);
+					}
+					
+					
+					
+					if(res['vehicle_price']){
+						var vehicle_price_htm = '<label>Vehicle Fare</label>';
+                    	vehicle_price_htm += '<span>LKR '+res['vehicle_price']+'</span>';
+						$('#vehicle_cost').html(vehicle_price_htm);
+						
+					}else{
+						$('#vehicle_cost').html('');
+					}
+					
+					$('#first_km_price').html(first_km_price);
+					$('#after_first_km_price').html(after_first_km_price);
+					$('#waiting_time_price').html(waiting_time_price);
+					
+					
+				   if(res['locations']){
+				   	html+='<ul>';
+				   	jQuery(res['locations']).each(function(index){
+						html+='<li><a href="javascript:;" data-place_id="'+res['locations'][index]['place_id']+'">'+res['locations'][index]['location']+'</a></li>';
+					});
+					html+='</ul>';
+				   }
+				   
+				   jQuery('.fromlocation').html(html);
+				   
+				   jQuery('.fromlocation a').click(function(){					  
+				   		var placeid=jQuery(this).attr('data-place_id');
+						jQuery('#placeid_from').val(placeid);
+						var place = jQuery(this).text();
+						jQuery('#mylox').val(place);												
+						jQuery('.setlocations').hide();
+						jQuery.ajax({  
+						 type: 'GET',  
+						 url: url,  
+						 //contentType: contentType,  
+						 dataType: 'json',  
+						 data: {placeid:placeid,locationdetail:1},
+						 crossDomain: true,  
+						 beforeSend: function() {
+							
+						 },		
+						 complete: function() {
+										
+						 },
+						 success: function(res) {
+						 	if(res['locdetail'])
+							{
+								jQuery('#from_lati').val(res['locdetail']['lat']);
+								jQuery('#from_longi').val(res['locdetail']['lng']);
+								checkdrivers(map);
+							}
+						 }
+						 });
+				   });
+				 },  
+				 error: function(response, d, a){
+					/*jQuery('body .showmessage').remove();
+					var html='<div class="showmessage">Server Error.</div>';
+					jQuery('body').append(html);
+					setTimeout(function(){jQuery('.showmessage').slideUp();},500); */					
+					jQuery('#screen_msg').html('<div class="showmessage">Opps something is wrong...</div>');
+				 } 
+			   });
+			}
+		});
+	
+		
+		jQuery('#drop-loc').keyup(function(event){
+			if(event.keyCode==13){
+				return false;
+			}
+			var fromtext=jQuery(this).val();
+			
+			if(jQuery.trim(fromtext)!=''){
+				
+				jQuery('.fromlocation').hide();
+				jQuery('.tolocation').show();
+				var url=siteurl+'/api/user/locations';
+				jQuery.ajax({  
+				 type: 'GET',  
+				 url: url,  
+				 //contentType: contentType,  
+				 dataType: 'json',  
+				 data: {input:fromtext,searchlocation:1},
+				 crossDomain: true,  
+				 beforeSend: function() {
+				 },		
+				 complete: function() {
+				 },
+				 success: function(res) { 
+				 	var html=''; 
+				   if(res['locations']){
+				   	html+='<ul>';
+				   	jQuery(res['locations']).each(function(index){
+						html+='<li><a href="javascript:;" data-place_id="'+res['locations'][index]['place_id']+'">'+res['locations'][index]['location']+'</a></li>';
+					});
+					html+='</ul>';
+					
+				   }
+				   
+				   jQuery('.tolocation').html(html);
+				    jQuery('.tolocation a').click(function(){
+				   		var placeid=jQuery(this).attr('data-place_id');
+						jQuery('#placeid_to').val(placeid);
+						var place = jQuery(this).text();
+						jQuery('#drop-loc').val(place);
+						jQuery('.setlocations').hide();
+						jQuery.ajax({  
+						 type: 'GET',  
+						 url: url,  
+						 //contentType: contentType,  
+						 dataType: 'json',  
+						 data: {placeid:placeid,locationdetail:1},
+						 crossDomain: true,  
+						 beforeSend: function() {
+							
+						 },		
+						 complete: function() {
+										
+						 },
+						 success: function(res) {
+						 	if(res['locdetail'])
+							{
+								jQuery('#desti_lati').val(res['locdetail']['lat']);
+								jQuery('#desti_longi').val(res['locdetail']['lng']);
+								
+								setTimeout(function(){
+									checkdrivers(map);
+								},1000);
+								
+							}
+						 }
+						 });
+				   });
+				 },  
+				 error: function(response, d, a){
+					/*jQuery('body .showmessage').remove();
+					var html='<div class="showmessage">Server Error.</div>';
+					jQuery('body').append(html);
+					setTimeout(function(){jQuery('.showmessage').slideUp();},500);*/
+										
+					jQuery('#screen_msg').html('<div class="showmessage">Opps something is wrong...</div>');
+				 } 
+			   });
+			}
+		});				
+	});
+	
+	
+	function show_filter_vehicle(){
+	  		var url=siteurl+'/api/user/locations';
+			var from_lati=jQuery('#from_lati').val();
+			var from_longi=jQuery('#from_longi').val();
+			//var vtype_id=jQuery('#vtype_id').val();			
+			var vtype_id=jQuery('#searchvtype_id').val();
+			
+	  		jQuery.ajax({  
+				 type: 'POST',  
+				 url: url,  				
+				 dataType: 'json',  
+				 data: {latitude:from_lati, frm_longitude:from_longi,vehicle_type_id: vtype_id, search_vehicle:1},
+				 crossDomain: true, 			 				 
+				 success: function(res) { 
+				 //var owl = jQuery('.owl-carousel');				 
+				 //owl.trigger('refresh.owl.carousel');
+				
+				 
+				 	var html = '<ul><div class="owl-carousel">';
+					
+					var html_pkg = '<ul><div class="owl-carousel">';
+					
+					
+									
+				 	if(res['responce']){
+						jQuery(res['responce']).each(function(index){
+							html += '<li class="item">';							
+							html_pkg += '<li class="item">';
+														
+							html += '<a class="link_'+res['responce'][index]['id']+ '" href="javascript:;" data-id="'+res['responce'][index]['id']+'">';	
+							
+							html_pkg += '<a class="link_'+res['responce'][index]['id']+ '" href="javascript:;" data-id="'+res['responce'][index]['id']+'">';
+													
+							if(res['responce'][index]['traveltime']){
+								html += '<span class="nocabs">' + res['responce'][index]['traveltime'] +'</span>';
+							}else{
+								html += '<span class="nocabs">no cabs</span>';
+							}
+							
+							if(res['responce'][index]['footerimage']!='null' && res['responce'][index]['footerimage']!=null){
+								html+='<div class="cabimg-box"><img src="'+res['responce'][index]['footerimage']+'" alt=""></div><span>'+res['responce'][index]['vtype']+'</span>';
+								
+								html_pkg+='<div class="cabimg-box"><img src="'+res['responce'][index]['footerimage']+'" alt=""></div><span>'+res['responce'][index]['vtype']+'</span>';
+							}
+							
+							html+='</a></li>';
+							html_pkg+='</a></li>';
+						});
+						
+						html += '<li class="item"><a class="show_pkg" href="javascript:;" data-id="show_pkg"><span class="nocabs">Package</span><div class="cabimg-box"><img src="images/package.png"></div></a></li>';
+						
+						
+						html += '</div></ul>';
+						
+						html_pkg += '</div></ul>';
+						
+						
+						if(res['vehicle_price']){
+							var vehicle_price_htm = '<label>Vehicle Fare</label>';
+							vehicle_price_htm += '<span>LKR '+res['vehicle_price']+'</span><br/>';
+							jQuery('#vehicle_cost').html(vehicle_price_htm);
+						
+						}else{
+							jQuery('#vehicle_cost').html('');
+						}
+						
+						jQuery('#car_type').html(html);					
+						jQuery('#book_later_carsual').html(html);
+						
+						jQuery('#pkgcar_type').html(html_pkg);
+						
+						if(res['vtype_id'])
+						{						
+							jQuery('.link_' + res['vtype_id']).closest('div').addClass('active');
+							jQuery('.link_' + res['vtype_id']).parent('li').addClass('active');											
+						}
+						
+						var owl = jQuery('.owl-carousel');
+						  owl.owlCarousel({
+							margin: 10,
+							loop: true,
+							items: 4,
+							loop: false,
+							responsive: {
+							  0: {
+								items: 4
+							  },
+							  600: {
+								items: 4
+							  },
+							  1000: {
+								items: 4
+							  }
+							}
+						  });
+						  
+						  jQuery('#book_later_carsual .owl-carousel li a, #car_type .owl-carousel li a').click(function(){
+						  	jQuery('.owl-carousel li').removeClass('active');
+							jQuery(this).parent('li').addClass('active');							
+							
+							if(jQuery(this).attr('data-id') != 'show_pkg')
+							{
+								jQuery('#searchvtype_id').val(jQuery(this).attr('data-id'));
+								//jQuery('#package_car_type').val(jQuery(this).attr('data-id'));
+								checkdrivers(map);
+							}else if(jQuery(this).attr('data-id') == 'show_pkg')
+							{
+								$("#packagepopup").modal('show');	
+							}
+							
+														
+						  });
+						  
+						  
+						  jQuery('#pkgcar_type .owl-carousel li a').click(function(){								
+							jQuery('#package_car_type').val(jQuery(this).attr('data-id'));
+							getPackage();	
+						});
+					}
+					
+					if(res['search_vehicle_result'] == 1)
+					{
+						jQuery('#screen_msg').html('<div class="showmessage">No vehicle found.</div>');	
+					}					
+				 }
+			 });
+	  	}
+	
+	
+	
+	function booknowtrip(){			
+			jQuery('#default_book_btn').hide();
+			jQuery('#car_type').hide();
+			jQuery('#book_later').hide();
+			jQuery('#book_now_prop').show();			
+		}
+	
+	function booknow_later(){			
+			jQuery('#default_book_btn').hide();
+			jQuery('#book_now_prop').hide();
+			jQuery('#car_type').hide();
+			jQuery('#book_later').show();			
+		}
+		
+	function cancel_booking(){
+		   jQuery('#default_book_btn').show();
+			jQuery('#book_now_prop').hide();
+			jQuery('#car_type').show();
+			jQuery('#book_later').hide();
+	}
+	
+	
+function choosePayment(payment_type){		
+	if(payment_type == 'card')
+	{
+		$('#cardpopbox').modal({
+					backdrop: 'static',
+					keyboard: false}
+		);
+	}else{
+		$('#cashpopbox').modal('hide');	
+	}
+	
+}
+
+
+// GET PAYMENT TOKEN
+
+jQuery(document).ready(function($) {
+    TCO.loadPubKey('sandbox');
+});
+
+// END
+
+var errorCallback = function(data) {
+    if (data.errorCode === 200) { 
+	
+	//alert("Sorry, invalid request");    	
+		navigator.notification.alert(
+						"Sorry, invalid request",
+						showNotify, 
+						'Invalid Token',
+						'OK'
+						);
+    } else {
+     //alert(data.errorMsg);
+	  navigator.notification.alert(
+						data.errorMsg,
+						showNotify, 
+						'Invalid Token',
+						'OK'
+						);
+    }
+  };
+
+var tokenRequest = function() {
+      var args = {
+      sellerId: "901363437",
+      publishableKey: "E2BE0C66-D5C5-4CA5-BC63-379A3D04982B",
+      ccNo: $("#billing_card").val(),
+      cvv: $("#billing_cvv2").val(),
+      expMonth: $("#billing_month").val(),
+      expYear: $("#billing_year").val()
+    };   
+    TCO.requestToken(successCallback, errorCallback, args);
+  };
+
+
+var successCallback = function(data) {   
+    jQuery("#payment_token").val(data.response.token.token);	
+  };
+
+
+function booking_card(){
+	
+	var errorMessage = '';
+	var error_ctr = 0;
+	
+	var from_lati=jQuery('#from_lati').val();
+		var from_longi=jQuery('#from_longi').val();
+		var desti_lati=jQuery('#desti_lati').val();
+		var desti_longi=jQuery('#desti_longi').val();
+		var vtype_id=jQuery('#searchvtype_id').val();				
+		var company_id=jQuery('#vehicle_company_id').val();
+		var brand_id=jQuery('#vehicle_brand_id').val();
+		var color_id=jQuery('#vehicle_color_id').val();
+		var mylox = jQuery('#mylox').val();
+		var droploc = jQuery('#drop-loc').val();		
+		var promo_code = jQuery('#promo_code').val();
+		
+		var payment_token = jQuery('#payment_token').val();
+		var billing_street = jQuery('#billing_street').val();
+		var billing_city = jQuery('#billing_city').val();
+		var billing_state = jQuery('#billing_state').val();
+		var billing_country = jQuery('#billing_country').val();
+		var billing_zipcode = jQuery('#billing_zipcode').val();
+		
+		var billing_card = jQuery('#billing_card').val();
+		var billing_month = jQuery('#billing_month').val();
+		var billing_year = jQuery('#billing_year').val();
+		var billing_cvv2 = jQuery('#billing_cvv2').val();
+		
+		var uid = localStorage.getItem('User_ID');
+		
+		
+	if(billing_street == "")
+	{
+		errorMessage += 'Please enter street address.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_city == "")
+	{
+		errorMessage += 'Please enter billing city.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_state == "")
+	{
+		errorMessage += 'Please enter billing state.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_country == "")
+	{
+		errorMessage += 'Please select billing country.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_zipcode == "")
+	{
+		errorMessage += 'Please enter post code.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_card == "")
+	{
+		errorMessage += 'Please enter card number.' + "\n";
+		error_ctr++;
+	}else if(!jQuery.isNumeric(billing_card))
+	{
+		errorMessage += 'Please enter valid card number.' + "\n";
+		error_ctr++;
+	}
+	
+	if(billing_cvv2 == "")
+	{
+		errorMessage += 'Please enter cvv number.' + "\n";
+		error_ctr++;
+	}else if(!jQuery.isNumeric(billing_cvv2))
+	{
+		errorMessage += 'Please enter valid cvv.' + "\n";
+		error_ctr++;
+	}
+
+	if(error_ctr == 0)
+	{
+		
+		tokenRequest();
+		
+		setTimeout(function(){
+		
+		var payment_token = jQuery('#payment_token').val();
+		
+		if(payment_token != "")
+		{	
+		
+		var url = siteurl+'/api/user/book_by_card';
+		
+		jQuery.ajax({  
+			 type: 'POST',  
+			 url: url,  						  
+			 dataType: 'json',  
+			 data: {source_add : mylox, source_latitude : from_lati, source_longitude : from_longi, dest_add : droploc, user_id : uid, book_act_card : 'book_now', desti_latitude : desti_lati, desti_longitude : desti_longi, payment_token: payment_token, billing_street: billing_street, billing_city: billing_city, billing_state:billing_state, billing_country:billing_country, billing_zipcode:billing_zipcode, promo_code:promo_code},
+			 crossDomain: true,  						
+			 success: function(booking) {
+				
+				if(booking['success'])
+				{					
+					window.location = 'trip-detail.html?booking_id='+booking['success']+ '&notify=true';
+				}else if(booking['error'])
+				{
+					//alert(data['error']);
+					navigator.notification.alert(
+					booking['error'],
+					showNotify,
+					'Payment Error!!',
+					'OK'
+					);
+				}
+			 }
+		  });
+		 
+			}
+	  },3000); 
+	}else if(error_ctr > 0){
+		
+		//alert(errorMessage);
+		navigator.notification.alert(
+						errorMessage,
+						showNotify, 
+						'Payment Error!!',
+						'OK'
+						);
+		return false;
+	}
+		 
+}
+
+	
+function booking_confirm_now(){
+	var from_lati=jQuery('#from_lati').val();
+		var from_longi=jQuery('#from_longi').val();
+		var desti_lati=jQuery('#desti_lati').val();
+		var desti_longi=jQuery('#desti_longi').val();
+		var vtype_id=jQuery('#searchvtype_id').val();				
+		var company_id=jQuery('#vehicle_company_id').val();
+		var brand_id=jQuery('#vehicle_brand_id').val();
+		var color_id=jQuery('#vehicle_color_id').val();
+		var mylox=jQuery('#mylox').val();
+		var droploc=jQuery('#drop-loc').val();
+		var promo_code=jQuery('#promo_code').val();
+		
+		var uid = localStorage.getItem('User_ID');
+		
+		var url=siteurl+'/api/user/users';
+		
+		jQuery.ajax({  
+			 type: 'POST',  
+			 url: url,  						  
+			 dataType: 'json',  
+			 data: {source_add : mylox, source_latitude : from_lati, source_longitude : from_longi, dest_add : droploc, user_id : uid, book_act : 'book_now', desti_latitude : desti_lati, desti_longitude : desti_longi, vahicle_type: vtype_id, company_id: company_id,
+			  brand_id: brand_id, color_id:color_id, promo_code:promo_code},
+			 crossDomain: true,  						
+			 success: function(booking) {
+				
+				if(booking['booking'])
+				{
+					//window.location = 'booking-success.html';	
+					window.location = 'trip-detail.html?booking_id='+booking['booking']+ '&notify=true';
+				}
+			 }
+		 });		
+}
+
+function getPackage(){
+	
+	var url = siteurl+'/api/user/packages';
+	var package_car_type = jQuery('#package_car_type').val();
+	var selected_from_address = jQuery('#mylox').val();
+	jQuery('#package_pickup_address').val(selected_from_address);
+			
+	  		jQuery.ajax({  
+				 type: 'POST',  
+				 url: url,  				
+				 dataType: 'json',  
+				 data: {package_car_type:package_car_type, search_package_action:'search_package'},
+				 crossDomain: true, 			 				 
+				 success: function(data) { 
+				 
+				 	var html_hourly = '';
+					
+									
+				 	if(data['per_hours']){
+						jQuery(data['per_hours']).each(function(index){ //package-detailpopup
+							
+						html_hourly += '<div class="pkg-day1-main">';
+						html_hourly +=' <a href="javascript:;" onclick="return showpackageDetail(\''+ data['per_hours'][index]['package_id'] +'\');">';	
+						html_hourly += '<div class="pkg-dy-dtl">'+ data['per_hours'][index]['package_day_hours'] +'<br>';
+                    	html_hourly += ' Hour</div>';
+                  		html_hourly += '<div class="pkg-km-dtl">'
+                    
+						html_hourly += '<h1>'+ data['per_hours'][index]['distance'] +'</h1>'; 
+						
+                    	html_hourly += '<div class="pkg-aditional-dtl">';
+                      	html_hourly += '<label>Additional:</label>';
+                      	html_hourly += '<span>'+ data['per_hours'][index]['add_charge_per_km'] +'/km - '+ data['per_hours'][index]['add_per_hrs'] +'/<br>Hr</span></div>';
+						
+                  		html_hourly += '</div>';
+						
+                  		html_hourly += '<div class="pkg-rate-dtl"><h1>LKR<br>'+ data['per_hours'][index]['price'] +'</h1>';
+                    	html_hourly += '<div class="pkg-dtl"> <img src="images/pkg-dtl.png"/> </div></div></a>';  
+				   		html_hourly += '</div>'
+							
+					 	});					 
+					}else{
+						html_hourly += '<p>No hourly package available for selected vehicle.</p>';	
+					}
+					
+					// end hours					
+					
+					//start day	
+					
+					var show_day_package = '';				
+					
+					if(data['per_day']){
+						jQuery(data['per_day']).each(function(index){
+							
+						show_day_package += '<div class="pkg-day1-main">';
+						show_day_package += ' <a href="javascript:;" onclick="return showpackageDetail(\''+ data['per_day'][index]['package_id'] +'\');">';	
+						show_day_package += '<div class="pkg-dy-dtl"> '+ data['per_day'][index]['package_day_hours'] +'<br>';
+                    	show_day_package += ' Day</div>';
+                  		show_day_package += '<div class="pkg-km-dtl">'
+						show_day_package += '<h1>'+ data['per_day'][index]['distance'] +'</h1>'; 						
+                    	show_day_package += '<div class="pkg-aditional-dtl">';
+                      	show_day_package += '<label>Additional:</label>';
+                      	show_day_package += '<span>'+ data['per_day'][index]['add_charge_per_km'] +'/km - '+ data['per_day'][index]['add_per_hrs'] +'/<br>Hr</span></div>';						
+                  		show_day_package += '</div>';						
+                  		show_day_package += '<div class="pkg-rate-dtl"><h1>LKR<br>'+ data['per_day'][index]['price'] +'</h1>';
+                    	show_day_package += '<div class="pkg-dtl"> <img src="images/pkg-dtl.png"/> </div></div></a>';  
+				   		show_day_package += '</div>'
+							
+					 	});					 
+					}else{
+						show_day_package += '<p>No day package available for selected vehicle.</p>';	
+					}						
+						
+						
+						jQuery('#view_hourly').html(html_hourly);
+							//console.log(show_day_package);					
+						jQuery('#view_day_package').html(show_day_package);				 
+									
+				 }
+			 });
+	
+}
+
+
+function showpackageDetail(package_id){
+	
+	var url = siteurl+'/api/user/packages';		
+		jQuery('#selected_package_id').val(package_id);		
+		
+			
+		jQuery.ajax({  
+			 type: 'POST',  
+			 url: url,  				
+			 dataType: 'json',  
+			 data: {package_id:package_id, search_package_action:'get_package_detail'},
+			 crossDomain: true, 			 				 
+			 success: function(data){
+				 
+			 var html_package_detail = '';
+			 
+			 var pick_up_address = jQuery('#package_pickup_address').val();
+			 var package_pick_up_date = jQuery('input[name="package_pick_up_date"]').val();
+			 var package_pick_up_time = jQuery('input[name="package_pick_up_time"]').val();
+						
+				 html_package_detail += '<div class="confirm-pkg">';
+            	 html_package_detail += '<h1>' + pick_up_address +'</h1>';
+				 html_package_detail += '<div class="pkg-cnfrm-block">';
+                 html_package_detail += '<div class="pkg-detailbox">';
+                 html_package_detail  += '<label>Pickup Date</label>';
+                 html_package_detail += '<span>'+ package_pick_up_date +'</span> </div>';
+                 html_package_detail += '<div class="pkg-detailbox">';
+                 html_package_detail += '<label>Pickup Time</label>';
+                 html_package_detail += '<span>' + package_pick_up_time + '</span> </div>';
+                 html_package_detail += '<div class="pkg-detailbox">';
+                 html_package_detail += '<label>Pickup Type</label>';
+                 html_package_detail += '<span>'+data['result']['type']+'</span> </div>';
+                 html_package_detail += '</div>';
+				 
+				 html_package_detail += '<div class="pkg-cnfrm-block">';
+				 html_package_detail += '<div class="pkg-detailbox">';
+				 html_package_detail += '<label>'+data['result']['type']+'</label>';
+				 html_package_detail += '<span>'+data['result']['package_day_hours']+'</span></div>';
+				 html_package_detail += '<div class="pkg-detailbox">';
+				 html_package_detail += '<label>Distance</label>';
+				 html_package_detail += '<span>'+data['result']['distance']+' Km</span> </div>';
+				 html_package_detail += '<div class="pkg-detailbox">';
+				 html_package_detail += '<label>Vehicle Type</label>';
+				 html_package_detail += '<span>'+data['result']['vname']+'</span> </div>';
+				 html_package_detail += '</div></div>';
+				  
+				html_package_detail += '<div class="confirm-amount">';
+				html_package_detail += '<div class="cnfm-prize confirm-amountbox">';
+                html_package_detail += '<label>Amount</label>';
+                html_package_detail += '<span>LKR '+data['result']['price']+'</span>';
+                html_package_detail += '<div class="arrow-right"></div>';
+              	html_package_detail += '</div>';
+            	html_package_detail += '<div class="promobox-prize confirm-amountbox">';
+                html_package_detail += '<label>Have a Promo code?</label>';
+                html_package_detail += '<input type="text" name="package_promo" id="package_promo" placeholder="Get a discount">';
+                html_package_detail += '</div></div>';
+				
+            	html_package_detail += '<div class="confirm-note"><span>Note:</span>';
+            	html_package_detail += '<p>All Packages include the return trip to the pickup location.</p>';
+          		html_package_detail += '</div>';
+				html_package_detail += '<div class="additional-charges">';
+				html_package_detail += '<p>if you exceeded the amount of agreed hours and distance you will be charged as below</p>';
+				html_package_detail += '<p>Additional charges(per km)<span>LKR '+data['result']['add_charge_per_km']+'</span></p>';
+				html_package_detail += '<p>Additional charges(per hr)<span>LKR '+data['result']['add_per_hrs']+'</span></p>';
+			  	html_package_detail += '</div>';
+				html_package_detail += '<a href="javascript:;" onClick="confirmPackagebook();" class="cnfrm-pkgbtn">Confirm</a>'; 
+	
+				jQuery('#package_detail_body').html(html_package_detail);
+				
+				jQuery('#package-detailpopup').modal('show');
+			}
+			 
+		});
+	
+}
+
+// end package detail
+
+// confirm package booking
+
+function confirmPackagebook(){
+
+	 var selected_package_id =  jQuery('#selected_package_id').val();
+	 var pick_up_address = jQuery('#package_pickup_address').val();
+	 var package_pick_up_date = jQuery('input[name="package_pick_up_date"]').val();
+	 var package_pick_up_time = jQuery('input[name="package_pick_up_time"]').val();
+	 var package_promo = jQuery('input[name="package_promo"]').val(); 
+	
+	 var uid = localStorage.getItem('User_ID');		
+	 var url=siteurl+'/api/user/packages';
+	
+	 jQuery.ajax({  
+			 type: 'POST',  
+			 url: url,  						  
+			 dataType: 'json',  
+			 data: {search_package_action : 'book_package', package_id : selected_package_id, pickup_address : pick_up_address, pick_up_date : package_pick_up_date, pickup_time : package_pick_up_time, package_promo:package_promo, user_id: uid},
+			 crossDomain: true,  						
+			 success: function(booking) {
+				
+				if(booking['success'])
+				{
+					window.location = 'package_booking_success.html';	
+				}
+				
+				if(booking['errors'])
+				{					
+					navigator.notification.alert(
+						booking['errors'],
+						showNotify, 
+						'Opps! please check errors',
+						'OK'
+						);
+					
+					
+						
+				}
+			 }
+		 });
+	
+	
+}
+
+// end
+
+function showNotify(){	
+	return true;
+}
+
+
+function checkPromo(){
+//promo_code	
+	
+ 		var user_promo = jQuery('#user_promo').val();
+		var user_id = localStorage.getItem('User_ID');		
+		var url = siteurl+'/api/user/coupon';
+		
+		jQuery.ajax({  
+			 type: 'POST',  
+			 url: url,  						  
+			 dataType: 'json',  
+			 data: {user_promo : user_promo, get_action : 'get_promo', user_id : user_id},
+			 crossDomain: true,  						
+			 success: function(promo) {
+				
+				if(promo['success'])
+				{
+					jQuery('#promo_code').val(promo['success']);					
+										
+					navigator.notification.alert(
+						'Promo code added successfully.',
+						showNotify, 
+						'Promo Code Applied',
+						'OK'
+						);
+					
+					jQuery('#promobox').modal('hide');
+				}
+				
+				if(promo['errors'])
+				{					
+					navigator.notification.alert(
+						promo['errors'],
+						showNotify, 
+						'Error',
+						'OK'
+						);	
+				}
+			 }
+		 });
+	
+}
+
+
+function booking_confirm_later(){
+		var from_lati=jQuery('#from_lati').val();
+		var from_longi=jQuery('#from_longi').val();
+		var desti_lati=jQuery('#desti_lati').val();
+		var desti_longi=jQuery('#desti_longi').val();
+		var vtype_id=jQuery('#searchvtype_id').val();
+		var company_id=jQuery('#vehicle_company_id').val();
+		var brand_id=jQuery('#vehicle_brand_id').val();
+		var color_id=jQuery('#vehicle_color_id').val();
+		var mylox=jQuery('#mylox').val();
+		var droploc=jQuery('#drop-loc').val();
+		var pick_up_date = jQuery('input[name="pick_up_date"]').val();
+		var pick_up_time = jQuery('input[name="pick_up_time"]').val();
+		var promo_code = jQuery('#promo_code').val();
+		var uid = localStorage.getItem('User_ID');		
+		var url=siteurl+'/api/user/users';
+		
+		jQuery.ajax({  
+			 type: 'POST',  
+			 url: url,  						  
+			 dataType: 'json',  
+			 data: {source_add : mylox, source_latitude : from_lati, source_longitude : from_longi, dest_add : droploc, user_id : uid, book_act : 'book_later', journey_date:pick_up_date, journey_time: pick_up_time, desti_latitude : desti_lati, desti_longitude : desti_longi, vahicle_type: vtype_id, company_id: company_id, brand_id: brand_id, color_id:color_id, promo_code:promo_code},
+			 crossDomain: true,  						
+			 success: function(booking) {
+				
+				if(booking['booking'])
+				{
+					window.location = 'trip-detail.html?booking_id='+booking['booking']+ '&notify=true';;					
+					/*jQuery('#booking_confirm').show();
+					
+					setTimeout(function(){
+						//showvehicletypes();	
+					},1000);*/
+						
+				}
+				
+				if(booking['errors'])
+				{					
+					navigator.notification.alert(
+						booking['errors'],
+						showNotify, 
+						'Error',
+						'OK'
+						);	
+				}
+			 }
+		 });
+}	
+</script> 
+<script>
+jQuery(function($) {
+jQuery('select').selectBoxIt({ });
+});
+</script>
+</body>
+</html>
