@@ -1033,11 +1033,10 @@ setTimeout(function(){
 				   });
 				 },  
 				 error: function(response, d, a){
-					/*jQuery('body .showmessage').remove();
-					var html='<div class="showmessage">Server Error.</div>';
+					jQuery('body .showmessage').remove();
+					var html='<div class="showmessage">Opps something is wrong...</div>';
 					jQuery('body').append(html);
-					setTimeout(function(){jQuery('.showmessage').slideUp();},500); */					
-					jQuery('#screen_msg').html('<div class="showmessage">Opps something is wrong...</div>');
+					setTimeout(function(){jQuery('.showmessage').slideUp();},500); 					
 				 } 
 			   });
 			}
